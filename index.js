@@ -7,10 +7,10 @@ const repositories = {
 const displayRepositories = (repositories) => {
 
   const table = document.querySelector(".repos");
+  const resRepos = repositories.map(defaultVal);
   const htmlString = repositories
       .map(createReposItem)
       .join("");
-  defaultVal(repositories);
   table.innerHTML = htmlString;
 };
 
@@ -70,6 +70,7 @@ function defaultVal(repos) {
   } else if (repos.description === null) {
     repos.description = " - ";
   }
+  return repos
 };
 
 //Function for creating repository item
