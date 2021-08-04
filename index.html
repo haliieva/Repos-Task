@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main>
+        <div id="preloader" class="visible"></div>
+        <header>
+            <select name="title" id="title_select" onchange="sortRepos()">
+                <option value="none">Select sort</option>
+                <option value="A-Z">Alphabetical (A-Z)</option>
+                <option value="Z-A">Alphabetical (Z-A)</option>
+            </select>
+
+            <input placeholder="Search by name..." type="text" id="search">
+        </header>
+        
+        <table class="repos-table">
+            <tr class="headers-name">
+                <th>NAME</th>
+                <th>LANGUAGE</th>
+                <th>DESCRIPTION</th>
+                <th>CREATED AT</th>
+                <th>PUBLISHED AT</th>
+                <th>UPDATED AT</th>
+            </tr>
+            <tbody class="repos"></tbody>
+        </table>
+    </main>
+    <script src="index.js" defer></script>
+</body>
+
+</html>
