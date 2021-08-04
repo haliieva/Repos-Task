@@ -23,7 +23,8 @@ function searchByReposName(e) {
   const filteredRepos = repositories.reposData.filter((repos) => {
     return repos.name.toLowerCase().includes(searchString);
   });
-  displayRepositories(filteredRepos);
+  repositories.reposData = filteredRepos;
+  displayRepositories(repositories.reposData);
 };
 
 // Function for sorting
@@ -43,13 +44,14 @@ const sortRepos = () => {
   } else if (selectedValue == "Z-A") {
     sortedRepos = repositories.reposData.reverse();
   }
-  displayRepositories(sortedRepos);
+  repositories.reposData = sortedRepos;
+  displayRepositories(repositories.reposData);
 };
 
 // function for requesting repositories
 const fetchAsyncRepos = async () => {
   const preloader = {
-    preloaderEl : document.getElementById('preloader')
+    preloaderEl: document.getElementById('preloader')
   }
   preloader.preloaderEl.classList.add('hidden');
   preloader.preloaderEl.classList.remove('visible');
