@@ -48,9 +48,11 @@ const sortRepos = () => {
 
 // function for requesting repositories
 const fetchAsyncRepos = async () => {
-  let preloaderEl = document.getElementById('preloader');
-  preloaderEl.classList.add('hidden');
-  preloaderEl.classList.remove('visible');
+  const preloader = {
+    preloaderEl : document.getElementById('preloader')
+  }
+  preloader.preloaderEl.classList.add('hidden');
+  preloader.preloaderEl.classList.remove('visible');
 
   const GIT_HUB_API_URL = "https://api.github.com/users/jdsecurity/repos";
   try {
@@ -70,7 +72,7 @@ function defaultVal(repos) {
   } else if (repos.description === null) {
     repos.description = " - ";
   }
-  return repos
+  return repos;
 };
 
 //Function for creating repository item
