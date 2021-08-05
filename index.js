@@ -1,4 +1,5 @@
 const searchBar = document.getElementById("search");
+const section = document.getElementById('title_select');
 const repositories = {
   reposData: []
 };
@@ -45,7 +46,7 @@ const sortRepos = () => {
     sortedRepos = repositories.reposData.reverse();
   }
   repositories.reposData = sortedRepos;
-  displayRepositories(repositories.reposData);
+  displayRepositories(repositories.reposData );
 };
 
 // function for requesting repositories
@@ -90,5 +91,9 @@ function createReposItem(repos) {
 </tr>
     `;
 };
+
+// sort repositories event
+section.addEventListener("change", sortRepos);
+
 
 fetchAsyncRepos();
