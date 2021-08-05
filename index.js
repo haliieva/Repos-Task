@@ -1,12 +1,12 @@
 const searchBar = document.getElementById("search");
 const section = document.getElementById('title_select');
+
 const repositories = {
   reposData: []
 };
 
 // Function for displaying repositories
 const displayRepositories = (repositories) => {
-
   const table = document.querySelector(".repos");
   const resRepos = repositories.map(defaultVal);
   const htmlString = repositories
@@ -16,25 +16,30 @@ const displayRepositories = (repositories) => {
 };
 
 // Search bar event
-searchBar.addEventListener("keyup", searchByReposName);
+searchBar.addEventListener("keyup", (e) => {
+  const data = searchByReposName(e.target.value, repositories.reposData);
+  // console.log(data)
+  displayRepositories(data);
+})
+
 
 //Functions for searching by repository name
-function searchByReposName(e) {
-  const searchString = e.target.value.toLowerCase();
-  const filteredRepos = repositories.reposData.filter((repos) => {
+function searchByReposName(name, data) {
+
+  const searchString = name.toLowerCase();
+  const filteredRepos = data.filter((repos) => {
     return repos.name.toLowerCase().includes(searchString);
   });
-  repositories.reposData = filteredRepos;
-  displayRepositories(repositories.reposData);
+  return filteredRepos;
 };
 
 // Function for sorting
-const sortRepos = () => {
+const sortRepos = (data) => {
   const selectedValue = document.getElementById("title_select").value;
-  let sortedRepos = "none";
+  let sortedRepos = [];
 
   if (selectedValue == "A-Z") {
-    sortedRepos = repositories.reposData.sort((a, b) => {
+    sortedRepos = data.sort((a, b) => {
       const nameA = a.name.toLowerCase(),
           nameB = b.name.toLowerCase();
 
@@ -43,11 +48,16 @@ const sortRepos = () => {
       return 0;
     });
   } else if (selectedValue == "Z-A") {
-    sortedRepos = repositories.reposData.reverse();
+    sortedRepos = data.reverse();
   }
-  repositories.reposData = sortedRepos;
-  displayRepositories(repositories.reposData );
+  return sortedRepos;
 };
+
+// sort repositories event
+section.addEventListener("change", () => {
+  const data = sortRepos(repositories.reposData)
+  displayRepositories(data);
+});
 
 // function for requesting repositories
 const fetchAsyncRepos = async () => {
@@ -61,8 +71,8 @@ const fetchAsyncRepos = async () => {
   try {
     const response = await fetch(GIT_HUB_API_URL);
     repositories.reposData = await response.json()
-
-    displayRepositories(repositories.reposData);
+    return repositories.reposData;
+    // displayRepositories(repositories.reposData);
   } catch (error) {
     console.error(error);
   }
@@ -92,8 +102,6 @@ function createReposItem(repos) {
     `;
 };
 
-// sort repositories event
-section.addEventListener("change", sortRepos);
-
-
-fetchAsyncRepos();
+fetchAsyncRepos().then((repositories) => {
+  displayRepositories(repositories)
+});
