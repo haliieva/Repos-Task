@@ -2,7 +2,8 @@ const searchBar = document.getElementById("search");
 const section = document.getElementById('title_select');
 
 const repositories = {
-  reposData: []
+  reposData: [],
+  filteredData:[]
 };
 
 // Function for displaying repositories
@@ -14,14 +15,6 @@ const displayRepositories = (repositories) => {
       .join("");
   table.innerHTML = htmlString;
 };
-
-// Search bar event
-searchBar.addEventListener("keyup", (e) => {
-  const data = searchByReposName(e.target.value, repositories.reposData);
-  // console.log(data)
-  displayRepositories(data);
-})
-
 
 //Functions for searching by repository name
 function searchByReposName(name, data) {
@@ -53,10 +46,16 @@ const sortRepos = (data) => {
   return sortedRepos;
 };
 
-// sort repositories event
+// Sort repositories event
 section.addEventListener("change", () => {
-  const data = sortRepos(repositories.reposData)
-  displayRepositories(data);
+  const data = sortRepos(repositories.filteredData)
+  displayRepositories(data.length !== 0 ? data : sortRepos(repositories.reposData));
+});
+
+// Search bar event
+searchBar.addEventListener("keyup", (e) => {
+  repositories.filteredData= searchByReposName(e.target.value, repositories.reposData);
+  displayRepositories(repositories.filteredData);
 });
 
 // function for requesting repositories
@@ -72,7 +71,7 @@ const fetchAsyncRepos = async () => {
     const response = await fetch(GIT_HUB_API_URL);
     repositories.reposData = await response.json()
     return repositories.reposData;
-    // displayRepositories(repositories.reposData);
+
   } catch (error) {
     console.error(error);
   }
